@@ -45,11 +45,14 @@
     <Compile Include="API\BaseAPI.cs" />
     <Compile Include="API\EntryAPI.cs" />
     <Compile Include="API\ProjectAPI.cs" />
+    <Compile Include="API\TaskAPI.cs" />
     <Compile Include="API\TeamAPI.cs" />
     <Compile Include="API\UserAPI.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Entity\Entry.cs" />
+    <Compile Include="Entity\EnumDict.cs" />
     <Compile Include="Entity\Project.cs" />
+    <Compile Include="Entity\Task.cs" />
     <Compile Include="Entity\Team.cs" />
     <Compile Include="Entity\User.cs" />
     <Compile Include="Error.cs" />

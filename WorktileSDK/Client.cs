@@ -12,6 +12,14 @@ namespace WorktileSDK
 
         public APIResource API { get; private set; }
 
+        public bool IsAuthorize
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(OAuth.AccessToken);
+            }
+        }
+
         public OAuth OAuth
         {
             get;

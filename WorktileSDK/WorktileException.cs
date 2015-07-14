@@ -109,16 +109,13 @@ namespace WorktileSDK
 
 		private static string GetErrorMsg(string errorCode)
 		{
-			//GO http://open.weibo.com/wiki/Error_code
 			Dictionary<string, string> ErrorMsgBag = new Dictionary<string, string>
 			{
-				{"0","unknown error:未知错误"},
-				{"1","network error:网络问题"},
-				{"10001","系统错误"},
                 {"100004","code已过期，请重新获取"},
-				{"10002","服务端资源不可用"},
-				{"10003","远程服务出错"},
-				{"10005","该资源需要appkey拥有更高级的授权"},
+				{"1003","client_id不能为空"},
+				{"100009","refresh_token不正确"},
+				{"100008","refresh_token和client_id不能为空"},
+
 				{"10006","缺少source参数(appkey)"},
 				{"10007","不支持的MediaType(%s)"},
 				{"10008","错误:参数错误，请参考API文档"},

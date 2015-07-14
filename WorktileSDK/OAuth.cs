@@ -13,6 +13,7 @@ namespace WorktileSDK
     {
         private const string AUTHORIZE_URL = "https://open.worktile.com/oauth2/authorize";
         private const string ACCESS_TOKEN_URL = "https://api.worktile.com/oauth2/access_token";
+        private const string REFRESH_TOKEN_URL = "https://api.worktile.com/oauth2/refresh_token";
 
         /// <summary>
         /// 获取App Key
@@ -42,7 +43,7 @@ namespace WorktileSDK
         }
 
         /// <summary>
-        /// Refresh Token 似乎目前没用
+        /// 用来刷新 Token 
         /// </summary>
         public string RefreshToken
         {
@@ -60,12 +61,49 @@ namespace WorktileSDK
         /// <summary>
         /// 根据返回来的code获取token
         /// </summary>
-        /// <param name="code"></param>
-        public void GetAccessTokenByCode(string code)
+        /// <param name="code">获取的code</param>
+        /// <param name="msg">获取token得到的消息</param>
+        /// <returns>是否获取成功</returns>
+        public bool GetAccessTokenByCode(string code,out string msg)
         {
-            string result = Request(ACCESS_TOKEN_URL, RequestMethod.Post, new WorktileParameter("client_id", AppKey), new WorktileParameter("code", code));
-            var token = JsonConvert.DeserializeObject<AccessToken>(result);
-            AccessToken = token.access_token;
+            try
+            {
+                string result = Request(ACCESS_TOKEN_URL, RequestMethod.Post, new WorktileParameter("client_id", AppKey), new WorktileParameter("code", code));
+                var token = JsonConvert.DeserializeObject<AccessToken>(result);
+                AccessToken = token.access_token;
+                RefreshToken = token.refresh_token;
+                msg = "获取token成功";
+                return true;
+            }
+            catch (WorktileException wtex)
+            {
+                msg = wtex.ErrorMessage;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 刷新token
+        /// </summary>
+        /// <param name="refresh_token">OAuth2授权后获取的refresh_token</param>
+        /// <param name="msg">刷新token得到的消息</param>
+        /// <returns></returns>
+        public bool RefreshAccessToken(string refresh_token, out string msg)
+        {
+            try
+            {
+                string result = Request(REFRESH_TOKEN_URL, RequestMethod.Post, new WorktileParameter("client_id", AppKey), new WorktileParameter("refresh_token", refresh_token));
+                var token = JsonConvert.DeserializeObject<AccessToken>(result);
+                AccessToken = token.access_token;
+                RefreshToken = token.refresh_token;
+                msg = "刷新token成功";
+                return true;
+            }
+            catch (WorktileException wtex)
+            {
+                msg = wtex.ErrorMessage;
+                return false;
+            }
         }
 
         /// <summary>

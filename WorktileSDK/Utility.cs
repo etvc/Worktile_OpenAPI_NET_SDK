@@ -31,50 +31,12 @@ namespace WorktileSDK
         Web
     }
 
-    internal enum GrantType
-    {
-        AuthorizationCode,
-        Password,
-        RefreshToken
-    }
-
     internal enum RequestMethod
     {
         Get,
         Post,
         Delete,
         Put
-    }
-   
-    /// <summary>
-    /// Token验证返回值
-    /// </summary>
-    public enum TokenResult
-    {
-        /// <summary>
-        /// 正常
-        /// </summary>
-        Success,
-        /// <summary>
-        /// Token已过期
-        /// </summary>
-        TokenExpired,
-        /// <summary>
-        /// Token已被占用
-        /// </summary>
-        TokenUsed,
-        /// <summary>
-        /// Token已被回收
-        /// </summary>
-        TokenRevoked,
-        /// <summary>
-        /// Token被拒绝
-        /// </summary>
-        TokenRejected,
-        /// <summary>
-        /// 其他问题
-        /// </summary>
-        Other
     }
 
     internal class WorktileParameterComparer : IComparer<WorktileParameter>
@@ -86,9 +48,6 @@ namespace WorktileSDK
         }
     }
 
-    /// <summary>
-    /// 微博工具类
-    /// </summary>
     public static class Utility
     {
         internal static string BuildQueryString(Dictionary<string, string> parameters)
@@ -121,6 +80,17 @@ namespace WorktileSDK
             }
 
             return string.Join("&", pairs.ToArray());
+        }
+
+        internal static string Array2String(string[] arrs)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[");
+            foreach (string arr in arrs)
+            {
+                sb.Append("'" + arr + "',");
+            }
+            return sb.ToString().TrimEnd(',') + "]";
         }
 
         internal static string GetBoundary()

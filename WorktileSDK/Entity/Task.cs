@@ -80,4 +80,16 @@ namespace WorktileSDK.Entity
         public string pic { get; set; }
         public string bg { get; set; }
     }
+
+    public class file
+    {
+        public string fid { get; set; }
+        public string name { get; set; }
+        public string desc { get; set; }
+        public string pid { get; set; }
+        public int size { get; set; }
+        public string path { get; set; }
+        public string folder_id { get; set; }
+    }
+
 }

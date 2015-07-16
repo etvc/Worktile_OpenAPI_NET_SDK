@@ -13,6 +13,11 @@ namespace WorktileSDK
         public TeamAPI TeamAPI { get; private set; }
         public ProjectAPI ProjectAPI { get; private set; }
         public EntryAPI EntryAPI { get; private set; }
+        public EventAPI EventAPI { get; private set; }
+        public FileAPI FileAPI { get; private set; }
+        public PageAPI PageAPI { get; private set; }
+        public PostAPI PostAPI { get; private set; }
+        public TaskAPI TaskAPI { get; private set; }
 
         public APIResource(Client client)
         {
@@ -20,6 +25,11 @@ namespace WorktileSDK
             this.TeamAPI = new TeamAPI(client);
             this.ProjectAPI = new ProjectAPI(client);
             this.EntryAPI = new EntryAPI(client);
+            this.EventAPI = new EventAPI(client);
+            this.FileAPI = new FileAPI(client);
+            this.PageAPI = new PageAPI(client);
+            this.PostAPI = new PostAPI(client);
+            this.TaskAPI = new TaskAPI(client);
         }
     }
 }

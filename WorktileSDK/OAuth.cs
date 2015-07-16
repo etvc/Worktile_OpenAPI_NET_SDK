@@ -296,8 +296,8 @@ namespace WorktileSDK
 
                         reader.Close();
 
-                        throw new WorktileException(error.error_code, error.error_message, error.request);
-
+                        HttpWebResponse hwr = webEx.Response as HttpWebResponse;
+                        throw new WorktileException(error.error_code, error.error_message, error.request,hwr.StatusCode);
                     }
                 }
                 else

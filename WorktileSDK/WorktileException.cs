@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Net;
 
 
 namespace WorktileSDK
@@ -36,75 +37,63 @@ namespace WorktileSDK
 		/// <summary>
 		/// 错误状态
 		/// </summary>
-		public string ErrorStatus
+        public HttpStatusCode StatusCode
 		{
 			get;
 			private set;
 		}
-		/// <summary>
-		/// 构造函数
-		/// </summary>
-		public WorktileException()
-		{
-		}
-		/// <summary>
-		/// 构造函数
-		/// </summary>
-		/// <param name="message"></param>
-		public WorktileException(string message)
-			: base(message)
-		{
-		}
-		/// <summary>
-		/// 构造函数
-		/// </summary>
-		/// <param name="message"></param>
-		/// <param name="inner"></param>
-		public WorktileException(string message, System.Net.WebException inner)
-			: base(message, inner)
-		{
 
-		}
-		/// <summary>
-		/// 构造函数
-		/// </summary>
-		/// <param name="code"></param>
-		/// <param name="status"></param>
-		/// <param name="request"></param>
-		public WorktileException(string code, string status, string request) :
-			base(GetErrorMsg(code))
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="status"></param>
+        /// <param name="request"></param>
+        public WorktileException(string error_msg):base(error_msg)
+        {
+            ErrorMessage = error_msg;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="error_msg"></param>
+        /// <param name="request"></param>
+        /// <param name="status_code"></param>
+        public WorktileException(string code, string error_msg, string request, HttpStatusCode status_code):base(error_msg) 
 		{ 
 			ErrorCode = code;
-			ErrorStatus = status;
+            StatusCode = status_code;
 			Request =request;
-			ErrorMessage = GetErrorMsg(code);
+            ErrorMessage = error_msg;
 		}
-		/// <summary>
-		/// 构造函数
-		/// </summary>
-		/// <param name="info"></param>
-		/// <param name="context"></param>
-        protected WorktileException(
-		  System.Runtime.Serialization.SerializationInfo info,
-		  System.Runtime.Serialization.StreamingContext context)
-			: base(info, context)
-		{
+        ///// <summary>
+        ///// 构造函数
+        ///// </summary>
+        ///// <param name="info"></param>
+        ///// <param name="context"></param>
+        //protected WorktileException(
+        //  System.Runtime.Serialization.SerializationInfo info,
+        //  System.Runtime.Serialization.StreamingContext context)
+        //    : base(info, context)
+        //{
 
-		}
-		/// <summary>
-		/// GetObjectData
-		/// </summary>
-		/// <param name="serializationInfo"></param>
-		/// <param name="streamingContext"></param>
-		public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
-		{
-			base.GetObjectData(serializationInfo, streamingContext);
+        //}
+        ///// <summary>
+        ///// GetObjectData
+        ///// </summary>
+        ///// <param name="serializationInfo"></param>
+        ///// <param name="streamingContext"></param>
+        //public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
+        //{
+        //    base.GetObjectData(serializationInfo, streamingContext);
 
-			if (serializationInfo != null)
-			{
+        //    if (serializationInfo != null)
+        //    {
 
-			}
-		}
+        //    }
+        //}
 
 
 		private static string GetErrorMsg(string errorCode)
@@ -115,26 +104,24 @@ namespace WorktileSDK
 				{"1003","client_id不能为空"},
 				{"100009","refresh_token不正确"},
 				{"100008","refresh_token和client_id不能为空"},
-
-				{"10006","缺少source参数(appkey)"},
-				{"10007","不支持的MediaType(%s)"},
-				{"10008","错误:参数错误，请参考API文档"},
-				{"10009","任务过多，系统繁忙"},
-				{"10010","任务超时"},
-				{"10011","RPC错误"},
-				{"10012","非法请求"},
-				{"10013","不合法的微博用户"},
-				{"10014","第三方应用访问api接口权限受限制"},
-				{"10016","错误:缺失必选参数:%s，请参考API文档"},
-				{"10017","错误:参数值非法,希望得到(%s),实际得到(%s)，请参考API文档"},
-				{"10018","请求长度超过限制"},
-				{"10020","接口不存在"},
-				{"10021","请求的HTTP METHOD不支持"},
-				{"10022","IP请求超过上限"},
-				{"10023","用户请求超过上限"},
-				{"10024","用户请求接口%s超过上限"},
-				{"10025","内部接口参数错误"},
-				{"20001","IDS参数为空"},
+				{"100005","未授权，请授权后再操作"},
+				{"100006","access_token不正确"},
+				{"300001","获取团队列表失败"},
+				{"300003","team_id不能为空"},
+				{"300004","团队不存在"},
+				{"300002","获取团队失败"},
+				{"400001","获取用户所有项目失败"},
+				{"400002","project_id不能为空"},
+				{"400003","获取项目失败"},
+				{"400004","项目不存在"},
+				{"400005","获取项目成员失败"},
+				{"400006","设定的成员角色不正确"},
+				{"400007","该成员已经存在"},
+				{"400008","添加成员失败"},
+				{"400009","该成员不在团队中"},
+				{"400010","该项目移除成员失败"},
+				{"400012","成员不在该项目中"},
+				{"200001","没有权限"},
 				{"20002","uid参数为空"},
 				{"20003","用户不存在"},
 				{"20005","不支持的图片类型,仅仅支持JPG,GIF,PNG"},

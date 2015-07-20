@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Profile";
+}
+@model WorktileSDK.Entity.User
+@using WorktileSDK.Entity;
+<h2>个人信息</h2>
+<table>
+    <tr>
+        <td>姓名</td>
+        <td>@Model.name</td>
+    </tr>
+    <tr>
+        <td>头像</td>
+        <td><img src="@Model.avatar" /></td>
+    <tr>
+        <td>个人说明</td>
+        <td>@Model.desc</td>
+    <tr />
+    <tr>
+        <td>uid</td>
+        <td><a href="/">@Model.uid</td>
+    </tr>
+</table>
+
+<br />
+<br />
+<table>
+    @foreach (Team t in ViewBag.teams as IEnumerable<Team>)
+    <tr>
+        <td>姓名</td>
+        <td>@Model.name</td>
+    </tr>
+    <tr>
+        <td>头像</td>
+        <td><img src="@Model.avatar" /></td>
+    <tr>
+        <td>个人说明</td>
+        <td>@Model.desc</td>
+    <tr />
+    <tr>
+        <td>uid</td>
+        <td><a href="/">@Model.uid</td>
+    </tr>
+</table>

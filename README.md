@@ -1,5 +1,4 @@
 #Worktile OpenAPI NET SDK
-***
 
 功能简介  
 1.OAuth2.0 授权验证  

@@ -35,7 +35,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public EntryOfAdd AddProjectEntry(string pid, string name)
         {
-            string result = Client.HttpPostRequest(string.Format("/entry?pid={0}", pid),
+            string result = Client.HttpPostRequest("/entry",
+                new WorktileParameter("pid", pid),
                 new WorktileParameter("name", name));
             return JsonConvert.DeserializeObject<EntryOfAdd>(result);
         }
@@ -49,10 +50,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool UpdateProjectEntryName(string entry_id, string pid, string name)
         {
-            string result = Client.HttpPutRequest(string.Format("/entries/:entry_id?pid={0}", pid),
+            string result = Client.HttpPutRequest("/entries/:entry_id",
+                new WorktileParameter("pid", pid),
                 new WorktileParameter("entry_id", entry_id),
                 new WorktileParameter("name", name));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -63,9 +65,10 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool RemoveProjectEntry(string entry_id, string pid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/entries/:entry_id?pid={0}", pid),
+            string result = Client.HttpDeleteRequest("/entries/:entry_id",
+                new WorktileParameter("pid", pid),
                new WorktileParameter("entry_id", entry_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -76,9 +79,10 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool WatchProjectEntry(string entry_id, string pid)
         {
-            string result = Client.HttpPostRequest(string.Format("/entries/:entry_id/watcher?pid={0}", pid),
+            string result = Client.HttpPostRequest("/entries/:entry_id/watcher",
+                new WorktileParameter("pid", pid),
                new WorktileParameter("entry_id", entry_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+            return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -89,9 +93,10 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool CancelWatchProjectEntry(string entry_id, string pid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/entries/:entry_id/watcher?pid={0}", pid),
+            string result = Client.HttpDeleteRequest("/entries/:entry_id/watcher",
+                new WorktileParameter("pid", pid),
                new WorktileParameter("entry_id", entry_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
     }
 }

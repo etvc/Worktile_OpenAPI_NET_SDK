@@ -75,7 +75,7 @@ namespace WorktileSDK.API
             string result = Client.HttpDeleteRequest("/projects/:pid/members",
                 new WorktileParameter("pid", pid),
                 new WorktileParameter("uid", uid));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
     }
 }

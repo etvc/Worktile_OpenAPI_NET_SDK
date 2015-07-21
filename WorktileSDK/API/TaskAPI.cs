@@ -54,8 +54,6 @@ namespace WorktileSDK.API
         /// <summary>
         /// 即将过期的任务 
         /// </summary>
-        /// <param name="pid">项目pid</param>
-        /// <param name="type">任务类型 已封装成枚举</param>
         /// <returns></returns>
         public IEnumerable<Task> GetTodayTasks()
         {
@@ -72,7 +70,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public Task CreateTask(string pid, string name, string entry_id)
         {
-            string result = Client.HttpPostRequest(string.Format("/task?pid={0}", pid), new WorktileParameter("name", name),
+            string result = Client.HttpPostRequest("/task", new WorktileParameter("pid", pid), new WorktileParameter("name", name),
                 new WorktileParameter("entry_id", entry_id));
             return JsonConvert.DeserializeObject<Task>(result);
         }
@@ -85,7 +83,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public Task GetTaskDetail(string tid, string pid)
         {
-            string result = Client.HttpGetRequest(string.Format("/tasks/:tid?pid={0}", pid), new WorktileParameter("tid", tid));
+            string result = Client.HttpGetRequest("/tasks/:tid", new WorktileParameter("tid", tid),
+                new WorktileParameter("pid", pid));
             return JsonConvert.DeserializeObject<Task>(result);
         }
 
@@ -99,10 +98,10 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool UpdateTask(string tid, string pid, string name, string desc)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid?pid={0}", pid), new WorktileParameter("tid", tid),
+            string result = Client.HttpPutRequest("/tasks/:tid", new WorktileParameter("pid", pid), new WorktileParameter("tid", tid),
                 new WorktileParameter("name", name),
                 new WorktileParameter("desc", desc));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -113,8 +112,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool DeleteTask(string tid, string pid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/tasks/:tid?pid={0}", pid), new WorktileParameter("tid", tid));
-            return JsonConvert.DeserializeObject<bool>(result);
+            string result = Client.HttpDeleteRequest("/tasks/:tid", new WorktileParameter("pid", pid), new WorktileParameter("tid", tid));
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -127,11 +126,12 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool MoveTask(string tid, string pid, string to_pid, string to_entry_id)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid/move?pid={0}", pid),
+            string result = Client.HttpPutRequest("/tasks/:tid/move",
+                new WorktileParameter("pid", pid),
                 new WorktileParameter("tid", tid),
                 new WorktileParameter("to_pid", to_pid),
                 new WorktileParameter("to_entry_id", to_entry_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -143,9 +143,10 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool SetTaskExpire(string tid, string pid, int expire)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid/expire?pid={0}", pid),
+            string result = Client.HttpPutRequest("/tasks/:tid/expire",
+                new WorktileParameter("pid", pid),
                new WorktileParameter("expire", expire));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -157,9 +158,10 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool AssignTask(string tid, string pid, string uid)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid/member?pid={0}", pid),
+            string result = Client.HttpPutRequest("/tasks/:tid/member",
+                new WorktileParameter("pid", pid),
                new WorktileParameter("uid", uid));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -171,10 +173,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool CancelAssignTask(string tid, string member_id, string pid)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid/members/:member_id?pid={0}", pid),
+            string result = Client.HttpPutRequest("/tasks/:tid/members/:member_id",
+                new WorktileParameter("pid", pid),
                new WorktileParameter("tid", tid),
                new WorktileParameter("member_id", member_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -186,10 +189,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool AddWatcher(string tid, string pid, string[] uids)
         {
-            string result = Client.HttpPostRequest(string.Format("/tasks/:tid/watcher?pid={0}", pid),
+            string result = Client.HttpPostRequest("/tasks/:tid/watcher",
+                new WorktileParameter("pid", pid),
                new WorktileParameter("tid", tid),
                new WorktileParameter("uids", Utility.Array2String(uids)));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -201,10 +205,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool RemoveWatcher(string tid, string uid, string pid)
         {
-            string result = Client.HttpPostRequest(string.Format("/tasks/:tid/watchers/:uid?pid={0}", pid),
+            string result = Client.HttpPostRequest("/tasks/:tid/watchers/:uid",
+                new WorktileParameter("pid", pid),
              new WorktileParameter("tid", tid),
              new WorktileParameter("uid", uid));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -216,8 +221,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool SetLabels(string tid, string pid, string label)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid/labels?pid={0}", pid), new WorktileParameter("tid", tid));
-            return JsonConvert.DeserializeObject<bool>(result);
+            string result = Client.HttpPutRequest("/tasks/:tid/labels", new WorktileParameter("pid", pid), new WorktileParameter("tid", tid));
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -229,8 +234,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool DeleteLabels(string tid, string pid, string label)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/tasks/:tid/labels?pid={0}", pid), new WorktileParameter("tid", tid));
-            return JsonConvert.DeserializeObject<bool>(result);
+            string result = Client.HttpDeleteRequest("/tasks/:tid/labels", new WorktileParameter("pid", pid), new WorktileParameter("tid", tid));
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -241,8 +246,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool TaskComplete(string tid, string pid)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid/complete?pid={0}", pid), new WorktileParameter("tid", tid));
-            return JsonConvert.DeserializeObject<bool>(result);
+            string result = Client.HttpPutRequest("/tasks/:tid/complete", new WorktileParameter("pid", pid), new WorktileParameter("tid", tid));
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -253,8 +258,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool TaskUnComplete(string tid, string pid)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid/uncomplete?pid={0}", pid), new WorktileParameter("tid", tid));
-            return JsonConvert.DeserializeObject<bool>(result);
+            string result = Client.HttpPutRequest("/tasks/:tid/uncomplete", new WorktileParameter("pid", pid), new WorktileParameter("tid", tid));
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -266,7 +271,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public todo AddTodo(string tid, string pid, string name)
         {
-            string result = Client.HttpPostRequest(string.Format("/tasks/:tid/todo?pid={0}", pid), new WorktileParameter("tid", tid),
+            string result = Client.HttpPostRequest("/tasks/:tid/todo", new WorktileParameter("pid", pid), new WorktileParameter("tid", tid),
                 new WorktileParameter("name", name));
             return JsonConvert.DeserializeObject<todo>(result);
         }
@@ -281,7 +286,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public todo UpdateTodo(string tid, string todo_id, string pid, string name)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid/todos/:todo_id?pid={0}", pid), new WorktileParameter("tid", tid),
+            string result = Client.HttpPutRequest("/tasks/:tid/todos/:todo_id", new WorktileParameter("pid", pid), new WorktileParameter("tid", tid),
                 new WorktileParameter("todo_id", todo_id),
                 new WorktileParameter("name", name));
             return JsonConvert.DeserializeObject<todo>(result);
@@ -296,10 +301,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool TodoChecked(string tid, string todo_id, string pid)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid/todos/:todo_id/checked?pid={0}", pid),
+            string result = Client.HttpPutRequest("/tasks/:tid/todos/:todo_id/checked",
+                new WorktileParameter("pid", pid),
                 new WorktileParameter("tid", tid),
                 new WorktileParameter("todo_id", todo_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -311,10 +317,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool TodoUnchecked(string tid, string todo_id, string pid)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid/todos/:todo_id/unchecked?pid={0}", pid),
+            string result = Client.HttpPutRequest("/tasks/:tid/todos/:todo_id/unchecked",
+                new WorktileParameter("pid", pid),
                new WorktileParameter("tid", tid),
                new WorktileParameter("todo_id", todo_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -326,10 +333,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool DeleteTodo(string tid, string todo_id, string pid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/tasks/:tid/todos/:todo_id?pid={0}", pid),
+            string result = Client.HttpDeleteRequest("/tasks/:tid/todos/:todo_id",
+                new WorktileParameter("pid", pid),
              new WorktileParameter("tid", tid),
              new WorktileParameter("todo_id", todo_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -356,8 +364,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool ArchiveProject(string pid, string entry_id)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/archive?pid={0}", pid), new WorktileParameter("entry_id", entry_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+            string result = Client.HttpPutRequest("/tasks/archive", new WorktileParameter("pid", pid), new WorktileParameter("entry_id", entry_id));
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -368,8 +376,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool ArchiveTask(string tid, string pid)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid/archive?pid={0}", pid), new WorktileParameter("tid", tid));
-            return JsonConvert.DeserializeObject<bool>(result);
+            string result = Client.HttpPutRequest("/tasks/:tid/archive", new WorktileParameter("pid", pid), new WorktileParameter("tid", tid));
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -381,8 +389,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool UnarchiveTask(string tid, string pid, string entry_id)
         {
-            string result = Client.HttpPutRequest(string.Format("/tasks/:tid/unarchive?pid={0}", pid), new WorktileParameter("tid", tid));
-            return JsonConvert.DeserializeObject<bool>(result);
+            string result = Client.HttpPutRequest("/tasks/:tid/unarchive", new WorktileParameter("pid", pid), new WorktileParameter("tid", tid));
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -393,7 +401,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public IEnumerable<Comment> GetTaskComments(string tid, string pid)
         {
-            string result = Client.HttpGetRequest(string.Format("/tasks/:tid/comments?pid={0}", pid), new WorktileParameter("tid", tid));
+            string result = Client.HttpGetRequest("/tasks/:tid/comments", new WorktileParameter("pid", pid), new WorktileParameter("tid", tid));
             return JsonConvert.DeserializeObject<List<Comment>>(result);
         }
 
@@ -407,7 +415,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public Comment AddComments(string tid, string pid, string message, string[] fids)
         {
-            string result = Client.HttpPostRequest(string.Format("/tasks/:tid/comment?pid={0}", pid),
+            string result = Client.HttpPostRequest("/tasks/:tid/comment",
+                new WorktileParameter("pid", pid),
                 new WorktileParameter("tid", tid),
                 new WorktileParameter("message", message),
                 new WorktileParameter("fids", Utility.Array2String(fids)));
@@ -423,10 +432,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool DeleteComment(string tid, string cid, string pid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/tasks/:tid/comments/:cid?pid={0}", pid),
+            string result = Client.HttpDeleteRequest("/tasks/:tid/comments/:cid",
+                new WorktileParameter("pid", pid),
              new WorktileParameter("tid", tid),
              new WorktileParameter("cid", cid));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
     }
 }

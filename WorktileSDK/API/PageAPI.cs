@@ -23,7 +23,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public IEnumerable<Page> GetProjectPages(string pid)
         {
-            string result = Client.HttpGetRequest(string.Format("/pages?pid={0}", pid));
+            string result = Client.HttpGetRequest("/pages", new WorktileParameter("pid", pid));
             return JsonConvert.DeserializeObject<List<Page>>(result);
         }
 
@@ -37,7 +37,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public Page CreatePage(string pid, string name, string content, string parent_id)
         {
-            string result = Client.HttpPostRequest(string.Format("/page?pid={0}", pid), new WorktileParameter("name", name)
+            string result = Client.HttpPostRequest("/page", new WorktileParameter("name", name)
+            , new WorktileParameter("pid", pid)
                 , new WorktileParameter("content", content),
                 new WorktileParameter("parent_id", parent_id));
             return JsonConvert.DeserializeObject<Page>(result);
@@ -51,7 +52,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public Page PageDetail(string page_id, string pid)
         {
-            string result = Client.HttpGetRequest(string.Format("/pages/:page_id?pid={0}", pid), new WorktileParameter("page_id", page_id));
+            string result = Client.HttpGetRequest("/pages/:page_id", new WorktileParameter("page_id", page_id), new WorktileParameter("pid", pid));
             return JsonConvert.DeserializeObject<Page>(result);
         }
 
@@ -66,11 +67,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool UpdatePage(string page_id, string pid, string name, string content, string parent_id)
         {
-            string result = Client.HttpPutRequest(string.Format("/pages/:page_id?pid={0}", pid), new WorktileParameter("page_id", page_id),
+            string result = Client.HttpPutRequest("/pages/:page_id", new WorktileParameter("pid", pid), new WorktileParameter("page_id", page_id),
                 new WorktileParameter("name", name),
                 new WorktileParameter("content", content),
                 new WorktileParameter("parent_id", parent_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -81,8 +82,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool DeletePage(string page_id, string pid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/pages/:page_id?pid={0}", pid), new WorktileParameter("page_id", page_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+            string result = Client.HttpDeleteRequest("/pages/:page_id", new WorktileParameter("page_id", page_id), new WorktileParameter("pid", pid));
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -94,9 +95,9 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool AddPageWatcher(string page_id, string pid, string[] uids)
         {
-            string result = Client.HttpPostRequest(string.Format("/pages/:page_id/watcher?pid={0}", pid), new WorktileParameter("page_id", page_id),
+            string result = Client.HttpPostRequest("/pages/:page_id/watcher", new WorktileParameter("pid", pid), new WorktileParameter("page_id", page_id),
                 new WorktileParameter("uids", Utility.Array2String(uids)));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -108,9 +109,9 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool RemovePageWatcher(string page_id, string pid, string uid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/pages/:page_id/watchers/:uid?pid={0}", pid), new WorktileParameter("page_id", page_id),
+            string result = Client.HttpDeleteRequest("/pages/:page_id/watchers/:uid", new WorktileParameter("pid", pid), new WorktileParameter("page_id", page_id),
                 new WorktileParameter("uid", uid));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -121,7 +122,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public IEnumerable<Comment> GetPageComments(string page_id, string pid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/pages/:page_id/comments?pid={0}", pid), new WorktileParameter("page_id", page_id));
+            string result = Client.HttpDeleteRequest("/pages/:page_id/comments", new WorktileParameter("pid", pid), new WorktileParameter("page_id", page_id));
             return JsonConvert.DeserializeObject<List<Comment>>(result);
         }
 
@@ -135,7 +136,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public Comment AddComments(string page_id, string pid, string message, string[] fids)
         {
-            string result = Client.HttpPostRequest(string.Format("/pages/:page_id/comment?pid={0}", pid),
+            string result = Client.HttpPostRequest("/pages/:page_id/comment",
+                new WorktileParameter("pid", pid),
                 new WorktileParameter("page_id", page_id),
                 new WorktileParameter("message", message),
                 new WorktileParameter("fids", Utility.Array2String(fids)));
@@ -151,10 +153,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool DeleteComment(string page_id, string cid, string pid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/pages/:page_id/comments/:cid?pid={0}", pid),
+            string result = Client.HttpDeleteRequest("/pages/:page_id/comments/:cid",
+                new WorktileParameter("pid", pid),
              new WorktileParameter("page_id", page_id),
              new WorktileParameter("cid", cid));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
     }
 

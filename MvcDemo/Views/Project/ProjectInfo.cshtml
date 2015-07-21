@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "项目详情";
+}
+@model WorktileSDK.Entity.Project
+@using WorktileSDK.Entity;
+<h2>项目信息</h2>
+<table>
+    <tr>
+        <td>项目名称</td>
+        <td>@Model.name</td>
+    </tr>
+    <tr>
+        <td>项目说明</td>
+        <td>@Model.desc</td>
+    </tr>
+</table>
+<h2>项目任务组信息</h2>
+<table>
+    @foreach (Entry e in ViewBag.entries as IEnumerable<Entry>)
+    {
+        <tr>
+            <td>任务组名称</td>
+            <td>@e.name</td>
+            <td>任务组id</td>
+            <td>@e.entry_id</td>
+            <td><a href="/Project/DeleteEntry?pid=@Model.pid&entry_id=@e.entry_id">删除</a></td>
+        </tr>
+    }
+</table>
+
+<h3>新建任务吧</h3>
+<form method="post" action="/Project/NewTask">
+    <input type="hidden" name="pid" value="@Model.pid" />
+    任务名称 <input type="text" name="name" />
+    任务组id<input type="text" name="entry_id" />
+    <input type="submit"  value="新建任务"/>
+</form>
+<h3>修改任务组名称吧</h3>
+
+<form method="post" action="/Project/UpdateEntryName">
+    <input type="hidden" name="pid" value="@Model.pid" />
+    任务组名称 <input type="text" name="name" />
+    任务组id<input type="text" name="entry_id" />
+    <input type="submit" value="修改任务组名称" />
+</form>

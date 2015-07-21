@@ -13,8 +13,8 @@ namespace WorktileSDK.Entity
         public string name { get; set; }
         public string summary { get; set; }
         public string content { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime updated_at { get; set; }
+        public DateTime? created_at { get; set; }
+        public DateTime? updated_at { get; set; }
         public member owner { get; set; }
         public IEnumerable<watcher> watchers { get; set; }
     }

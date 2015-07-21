@@ -18,27 +18,26 @@
     <tr />
     <tr>
         <td>uid</td>
-        <td><a href="/">@Model.uid</td>
+        <td>@Model.uid</td>
     </tr>
 </table>
 
 <br />
 <br />
 <table>
-    @foreach (Team t in ViewBag.teams as IEnumerable<Team>)
     <tr>
-        <td>姓名</td>
-        <td>@Model.name</td>
+        <td>项目名称</td>
+        <td>项目id</td>
+        <td>项目说明</td>
     </tr>
-    <tr>
-        <td>头像</td>
-        <td><img src="@Model.avatar" /></td>
-    <tr>
-        <td>个人说明</td>
-        <td>@Model.desc</td>
-    <tr />
-    <tr>
-        <td>uid</td>
-        <td><a href="/">@Model.uid</td>
-    </tr>
+    @foreach (var t in ViewBag.projects as IEnumerable<Project>)
+    {
+        <tr>
+            <td>@t.name</td>
+            <td>@t.pid</td>
+            <td>@t.desc</td>
+            <td><a href="/Project/ProjectInfo?pid=@t.pid">详情</a></td>
+        </tr>
+    }
 </table>
+<br />

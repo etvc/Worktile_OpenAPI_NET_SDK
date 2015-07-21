@@ -13,8 +13,8 @@ namespace WorktileSDK.Entity
         public string tid { get; set; }
         public string entry_id { get; set; }
         public string entry_name { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime updated_at { get; set; }
+        public DateTime? created_at { get; set; }
+        public DateTime? updated_at { get; set; }
         public int pos { get; set; }
         public IEnumerable<label> labels { get; set; }
         public IEnumerable<todo> todos { get; set; }
@@ -22,7 +22,7 @@ namespace WorktileSDK.Entity
         public IEnumerable<watcher> watchers { get; set; }
         public IEnumerable<member> members { get; set; }
         public int completed { get; set; }
-        public DateTime expire_date { get; set; }
+        public DateTime? expire_date { get; set; }
         public string desc { get; set; }
         public project project { get; set; }
     }
@@ -44,7 +44,7 @@ namespace WorktileSDK.Entity
 
     public class badges
     {
-        public DateTime expire_date { get; set; }
+        public DateTime? expire_date { get; set; }
         public int comment_count { get; set; }
         public int todo_checked_count { get; set; }
         public int todo_count { get; set; }

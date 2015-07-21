@@ -16,6 +16,6 @@ namespace WorktileSDK.Entity
         public string[] fids { get; set; }
         public member owner { get; set; }
         public IEnumerable<file> files { get; set; }
-        public DateTime created_at { get; set; }
+        public DateTime? created_at { get; set; }
     }
 }

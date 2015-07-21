@@ -23,7 +23,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public IEnumerable<Post> GetProjectPosts(string pid)
         {
-            string result = Client.HttpGetRequest("/posts?pid={0}");
+            string result = Client.HttpGetRequest("/posts",new WorktileParameter("pid",pid));
             return JsonConvert.DeserializeObject<List<Post>>(result);
         }
 
@@ -36,7 +36,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public Post CreatePost(string pid, string name, string content)
         {
-            string result = Client.HttpPostRequest("/post?pid={0}", new WorktileParameter("name", name),
+            string result = Client.HttpPostRequest("/post", new WorktileParameter("name", name),
+                new WorktileParameter("pid",pid),
                 new WorktileParameter("content", content));
             return JsonConvert.DeserializeObject<Post>(result);
         }
@@ -49,7 +50,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public Post PostDetail(string post_id, string pid)
         {
-            string result = Client.HttpGetRequest(string.Format("/posts/:post_id?pid={0}", pid),
+            string result = Client.HttpGetRequest("/posts/:post_id",
+                new WorktileParameter("pid",pid),
                 new WorktileParameter("post_id", post_id));
             return JsonConvert.DeserializeObject<Post>(result);
         }
@@ -64,11 +66,12 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool UpdatePost(string post_id, string pid, string name, string content)
         {
-            string result = Client.HttpPutRequest(string.Format("/posts/:post_id?pid={0}", pid),
+            string result = Client.HttpPutRequest("/posts/:post_id",
+                new WorktileParameter("pid",pid),
                 new WorktileParameter("post_id", post_id),
                 new WorktileParameter("name", name),
                 new WorktileParameter("content", content));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -79,9 +82,10 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool DeletePost(string post_id, string pid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/posts/:post_id?pid={0}", pid),
+            string result = Client.HttpDeleteRequest("/posts/:post_id",
+                new WorktileParameter("pid",pid),
                 new WorktileParameter("post_id", post_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -93,10 +97,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool AddPostWatchers(string post_id, string pid, string[] uids)
         {
-            string result = Client.HttpPostRequest(string.Format("/posts/:post_id/watcher?pid={0}", pid),
+            string result = Client.HttpPostRequest("/posts/:post_id/watcher",
+                new WorktileParameter("pid",pid),
               new WorktileParameter("post_id", post_id),
               new WorktileParameter("uids", Utility.Array2String(uids)));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -108,10 +113,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool RemovePostWatcher(string post_id, string pid, string[] uid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/posts/:post_id/watchers/:uid?pid={0}", pid),
+            string result = Client.HttpDeleteRequest("/posts/:post_id/watchers/:uid",
+                new WorktileParameter("pid",pid),
               new WorktileParameter("post_id", post_id),
               new WorktileParameter("uid", uid));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -124,7 +130,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public Comment AddComments(string post_id, string pid, string message, string[] fids)
         {
-            string result = Client.HttpPostRequest(string.Format("/posts/:post_id/comment?pid={0}", pid),
+            string result = Client.HttpPostRequest("/posts/:post_id/comment",
+                new WorktileParameter("pid",pid),
                 new WorktileParameter("post_id", post_id),
                 new WorktileParameter("message", message),
                 new WorktileParameter("fids", Utility.Array2String(fids)));
@@ -140,10 +147,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool DeleteComment(string post_id, string cid, string pid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/posts/:post_id/comments/:cid?pid={0}", pid),
+            string result = Client.HttpDeleteRequest("/posts/:post_id/comments/:cid"
+                ,new WorktileParameter("pid",pid),
              new WorktileParameter("post_id", post_id),
              new WorktileParameter("cid", cid));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
     }
 }

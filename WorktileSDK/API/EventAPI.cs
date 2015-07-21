@@ -38,7 +38,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public IEnumerable<Event> GetTodayEvents(string pid)
         {
-            string result = Client.HttpGetRequest(string.Format("/events/today?pid={0}", pid));
+            string result = Client.HttpGetRequest("/events/today", new WorktileParameter("pid", pid));
             return JsonConvert.DeserializeObject<List<Event>>(result);
         }
 
@@ -55,7 +55,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public Event CreateEvent(string pid, string name, string location, string start_date, string start_time, string end_date, string end_time)
         {
-            string result = Client.HttpPostRequest(string.Format("/event?pid={0}", pid),
+            string result = Client.HttpPostRequest("/event", new WorktileParameter("pid", pid),
                 new WorktileParameter("name", name),
                 new WorktileParameter("location", location),
                 new WorktileParameter("start_date", start_date),
@@ -73,7 +73,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public Event GetEventDetail(string event_id, string pid)
         {
-            string result = Client.HttpGetRequest(string.Format("/events/:event_id?pid={0}", pid),
+            string result = Client.HttpGetRequest("/events/:event_id",
+                new WorktileParameter("pid", pid),
                new WorktileParameter("event_id", event_id));
             return JsonConvert.DeserializeObject<Event>(result);
         }
@@ -93,7 +94,7 @@ namespace WorktileSDK.API
         public bool UpdateEvent(string event_id, string pid, string name, string summary, string
             start_date, string start_time, string end_date, string end_time)
         {
-            string result = Client.HttpPutRequest(string.Format("/events/:event_id?pid={0}", pid),
+            string result = Client.HttpPutRequest("/events/:event_id", new WorktileParameter("pid", pid),
               new WorktileParameter("event_id", event_id),
               new WorktileParameter("name", name),
               new WorktileParameter("summary", summary),
@@ -101,7 +102,7 @@ namespace WorktileSDK.API
               new WorktileParameter("start_time", start_time),
               new WorktileParameter("end_date", end_date),
               new WorktileParameter("end_time", end_time));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -112,9 +113,10 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool DeleteEvent(string event_id, string pid)
         {
-            string result = Client.HttpPutRequest(string.Format("/events/:event_id?pid={0}", pid),
+            string result = Client.HttpPutRequest("/events/:event_id",
+                new WorktileParameter("pid", pid),
              new WorktileParameter("event_id", event_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -126,10 +128,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool AddAttendee(string event_id, string pid, string uid)
         {
-            string result = Client.HttpPutRequest(string.Format("/events/:event_id/attendee?pid={0}", pid),
+            string result = Client.HttpPutRequest("/events/:event_id/attendee",
+                new WorktileParameter("pid", pid),
                 new WorktileParameter("event_id", event_id),
                 new WorktileParameter("uid", uid));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -141,10 +144,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool RemoveAttendee(string event_id, string pid, string attendee_id)
         {
-            string result = Client.HttpPutRequest(string.Format("/events/:event_id/attendees/:attendee_id?pid={0}", pid),
+            string result = Client.HttpPutRequest("/events/:event_id/attendees/:attendee_id",
+                new WorktileParameter("pid", pid),
                 new WorktileParameter("event_id", event_id),
                 new WorktileParameter("attendee_id", attendee_id));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -155,7 +159,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public IEnumerable<Comment> GetEventComments(string event_id, string pid)
         {
-            string result = Client.HttpPutRequest(string.Format("/events/:event_id/comments?pid={0}", pid),
+            string result = Client.HttpPutRequest("/events/:event_id/comments",
+                new WorktileParameter("pid", pid),
                new WorktileParameter("event_id", event_id));
             return JsonConvert.DeserializeObject<List<Comment>>(result);
         }
@@ -177,7 +182,8 @@ namespace WorktileSDK.API
                 sb.Append("'" + fid + "',");
             }
             string str = sb.ToString().TrimEnd(',') + "]";
-            string result = Client.HttpGetRequest(string.Format("/events/:event_id/comment?pid={0}", pid),
+            string result = Client.HttpGetRequest("/events/:event_id/comment",
+                new WorktileParameter("pid", pid),
                 new WorktileParameter("event_id", event_id),
                 new WorktileParameter("message", message),
                 new WorktileParameter("fids", str));
@@ -193,10 +199,11 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool DeleteComment(string event_id, string pid, string cid)
         {
-            string result = Client.HttpGetRequest(string.Format("/events/:event_id/comments/:cid?pid={0}", pid),
+            string result = Client.HttpGetRequest("/events/:event_id/comments/:cid",
+                new WorktileParameter("pid", pid),
                 new WorktileParameter("event_id", event_id),
                 new WorktileParameter("cid", cid));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
     }
 }

@@ -35,7 +35,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public IEnumerable<Image> GetProjectImages(string pid)
         {
-            string result = Client.HttpGetRequest(string.Format("/files/images?pid={0}", pid));
+            string result = Client.HttpGetRequest("/files/images", new WorktileParameter("pid", pid));
             return JsonConvert.DeserializeObject<List<Image>>(result);
         }
 
@@ -47,7 +47,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public File FileDetail(string fid, string pid)
         {
-            string result = Client.HttpGetRequest(string.Format("/files/:fid?pid={0}", pid), new WorktileParameter("fid", fid));
+            string result = Client.HttpGetRequest("/files/:fid", new WorktileParameter("pid", pid), new WorktileParameter("fid", fid));
             return JsonConvert.DeserializeObject<File>(result);
         }
 
@@ -61,10 +61,10 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool UpdateFile(string fid, string pid, string name, string desc)
         {
-            string result = Client.HttpPutRequest(string.Format("/files/:fid?pid={0}", pid), new WorktileParameter("fid", fid),
+            string result = Client.HttpPutRequest("/files/:fid", new WorktileParameter("pid", pid), new WorktileParameter("fid", fid),
                 new WorktileParameter("name", name),
                 new WorktileParameter("desc", desc));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool DeleteFile(string fid, string pid)
         {
-            string result = Client.HttpDeleteRequest(string.Format("/files/:fid?pid={0}", pid), new WorktileParameter("fid", fid));
-            return JsonConvert.DeserializeObject<bool>(result);
+            string result = Client.HttpDeleteRequest("/files/:fid", new WorktileParameter("pid", pid), new WorktileParameter("fid", fid));
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -89,10 +89,10 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool MoveFile(string fid, string pid, string from, string to)
         {
-            string result = Client.HttpPutRequest(string.Format("/files/:fid/move?pid={0}", pid), new WorktileParameter("fid", fid),
+            string result = Client.HttpPutRequest("/files/:fid/move", new WorktileParameter("pid", pid), new WorktileParameter("fid", fid),
                 new WorktileParameter("from", from),
                 new WorktileParameter("to", to));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -104,9 +104,9 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool AddFileWatchers(string fid, string pid, string[] uids)
         {
-            string result = Client.HttpPostRequest(string.Format("/files/:fid/watcher?pid={0}", pid), new WorktileParameter("fid", fid),
+            string result = Client.HttpPostRequest("/files/:fid/watcher", new WorktileParameter("pid", pid), new WorktileParameter("fid", fid),
                 new WorktileParameter("uids", Utility.Array2String(uids)));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -118,9 +118,9 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool RemoveFileWatcher(string fid, string pid, string uid)
         {
-            string result = Client.HttpPostRequest(string.Format("/files/:fid/watchers/:uid?pid={0}", pid), new WorktileParameter("fid", fid),
+            string result = Client.HttpPostRequest("/files/:fid/watchers/:uid", new WorktileParameter("pid", pid), new WorktileParameter("fid", fid),
                   new WorktileParameter("uid", uid));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public IEnumerable<Comment> GetFileComments(string fid, string pid)
         {
-            string result = Client.HttpPostRequest(string.Format("/files/:fid/comments?pid={0}", pid), new WorktileParameter("fid", fid));
+            string result = Client.HttpPostRequest("/files/:fid/comments", new WorktileParameter("pid", pid), new WorktileParameter("fid", fid));
             return JsonConvert.DeserializeObject<List<Comment>>(result);
         }
 
@@ -145,7 +145,7 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public Comment AddComments(string fid, string pid, string message, string[] fids)
         {
-            string result = Client.HttpGetRequest(string.Format("/files/:fid/comment?pid={0}", pid),
+            string result = Client.HttpGetRequest("/files/:fid/comment", new WorktileParameter("pid", pid),
                 new WorktileParameter("fid", fid),
                 new WorktileParameter("message", message),
                 new WorktileParameter("fids", Utility.Array2String(fids)));
@@ -161,10 +161,10 @@ namespace WorktileSDK.API
         /// <returns></returns>
         public bool DeleteComment(string fid, string cid, string pid)
         {
-            string result = Client.HttpGetRequest(string.Format("/tasks/:tid/comments/:cid?pid={0}", pid),
+            string result = Client.HttpGetRequest("/tasks/:tid/comments/:cid", new WorktileParameter("pid", pid),
              new WorktileParameter("fid", fid),
              new WorktileParameter("cid", cid));
-            return JsonConvert.DeserializeObject<bool>(result);
+             return JsonConvert.DeserializeObject<Result>(result).success;
         }
     }
 }

@@ -10,8 +10,8 @@ namespace WorktileSDK.Entity
     {
         public string entry_id { get; set; }
         public string name { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime updated_at { get; set; }
+        public DateTime? created_at { get; set; }
+        public DateTime? updated_at { get; set; }
         public bool watched { get; set; }
     }
 
@@ -20,7 +20,7 @@ namespace WorktileSDK.Entity
         public string entry_id { get; set; }
         public string name { get; set; }
         public string pid { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime updated_at { get; set; }
+        public DateTime? created_at { get; set; }
+        public DateTime? updated_at { get; set; }
     }
 }

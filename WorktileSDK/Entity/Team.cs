@@ -13,7 +13,7 @@ namespace WorktileSDK.Entity
         public string name { get; set; }
         public string pic { get; set; }
         public string desc { get; set; }
-        public DateTime created_at { get; set; }
+        public DateTime? created_at { get; set; }
         public int visibility { get; set; }
         public created_by created_by { get; set; }
     }
@@ -40,7 +40,7 @@ namespace WorktileSDK.Entity
         public string email { get; set; }
         public string desc { get; set; }
         public int role { get; set; }
-        public DateTime join_date { get; set; }
+        public DateTime? join_date { get; set; }
     }
 
     public class MemberOfAdd

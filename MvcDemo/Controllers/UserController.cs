@@ -16,9 +16,8 @@ namespace MvcDemo.Controllers
         public ActionResult UserProfile()
         {
             User user = WTClient.API.UserAPI.GetUserProfile();
-            ViewBag.teams = WTClient.API.TeamAPI.GetTeams();
+            ViewBag.projects = WTClient.API.ProjectAPI.GetProjects();
             return View(user);
         }
-
     }
 }

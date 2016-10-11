@@ -6,7 +6,10 @@
       <Value Profile="(Default)">dae7cc17d8084ca1a2d6b8e27f2bbc98</Value>
     </Setting>
     <Setting Name="CallBack" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://123.57.224.195:8012/home/auth</Value>
+      <Value Profile="(Default)">http://localhost:10438/home/auth</Value>
+    </Setting>
+    <Setting Name="AppSecret" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">9ffb8a2acedf4d98b87c407f499a0efb </Value>
     </Setting>
   </Settings>
 </SettingsFile>

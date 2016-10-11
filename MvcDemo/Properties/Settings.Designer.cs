@@ -34,10 +34,19 @@ namespace MvcDemo.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://123.57.224.195:8012/home/auth")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:10438/home/auth")]
         public string CallBack {
             get {
                 return ((string)(this["CallBack"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9ffb8a2acedf4d98b87c407f499a0efb ")]
+        public string AppSecret {
+            get {
+                return ((string)(this["AppSecret"]));
             }
         }
     }

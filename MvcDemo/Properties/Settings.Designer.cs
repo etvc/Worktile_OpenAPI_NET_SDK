@@ -25,7 +25,7 @@ namespace MvcDemo.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("dae7cc17d8084ca1a2d6b8e27f2bbc98")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4c72ae76952c4ef8a94f6fa8c99b917e")]
         public string AppKey {
             get {
                 return ((string)(this["AppKey"]));
@@ -34,7 +34,7 @@ namespace MvcDemo.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:10438/home/auth")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://test.xjsf.org:10438/home/auth")]
         public string CallBack {
             get {
                 return ((string)(this["CallBack"]));
@@ -43,7 +43,7 @@ namespace MvcDemo.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9ffb8a2acedf4d98b87c407f499a0efb ")]
+        [global::System.Configuration.DefaultSettingValueAttribute("9ffb8a2acedf4d98b87c407f499a0efb")]
         public string AppSecret {
             get {
                 return ((string)(this["AppSecret"]));

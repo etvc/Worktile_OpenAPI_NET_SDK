@@ -41,7 +41,8 @@ namespace WorktileSDK
             get;
             set;
         }
-
+        public string AppSecret { get; internal set; }
+        
         /// <summary>
         /// 用来刷新 Token 
         /// </summary>
@@ -51,11 +52,12 @@ namespace WorktileSDK
             internal set;
         }
 
-        public OAuth(string appKey, string callbackUrl)
+        public OAuth(string appKey, string appSecret,string callbackUrl)
         {
             this.AppKey = appKey;
             this.AccessToken = string.Empty;
             this.CallbackUrl = callbackUrl;
+            this.AppSecret = appSecret;
         }
 
         /// <summary>
@@ -68,7 +70,7 @@ namespace WorktileSDK
         {
             try
             {
-                string result = Request(ACCESS_TOKEN_URL, RequestMethod.Post, new WorktileParameter("client_id", AppKey), new WorktileParameter("code", code));
+                string result = Request(ACCESS_TOKEN_URL, RequestMethod.Post, new WorktileParameter("client_id", AppKey), new WorktileParameter("client_secret", AppSecret), new WorktileParameter("code", code));
                 var token = JsonConvert.DeserializeObject<AccessToken>(result);
                 AccessToken = token.access_token;
                 RefreshToken = token.refresh_token;
@@ -92,7 +94,7 @@ namespace WorktileSDK
         {
             try
             {
-                string result = Request(REFRESH_TOKEN_URL, RequestMethod.Post, new WorktileParameter("client_id", AppKey), new WorktileParameter("refresh_token", refresh_token));
+                string result = Request(REFRESH_TOKEN_URL, RequestMethod.Get, new WorktileParameter("client_id", AppKey), new WorktileParameter("refresh_token", refresh_token));
                 var token = JsonConvert.DeserializeObject<AccessToken>(result);
                 AccessToken = token.access_token;
                 RefreshToken = token.refresh_token;
@@ -126,6 +128,7 @@ namespace WorktileSDK
 
             return builder.ToString();
         }
+
 
         internal string Request(string url, RequestMethod method = RequestMethod.Get, params WorktileParameter[] parameters)
         {
@@ -286,15 +289,25 @@ namespace WorktileSDK
             }
             catch (System.Net.WebException webEx)
             {
-                if (webEx.Response != null)
+                if (webEx.Response != null  )
                 {
                     using (StreamReader reader = new StreamReader(webEx.Response.GetResponseStream()))
                     {
                         string errorInfo = reader.ReadToEnd();
+                        Error error = new Error ();
+                        try
+                        {
+                              error = JsonConvert.DeserializeObject<Error>(errorInfo);
+                        }
+                        catch (Exception ex)
+                        {
+                            error.error_code = "-1";
+                            error.error_message = errorInfo;
+                            error.request = "";
 
-                        Error error = JsonConvert.DeserializeObject<Error>(errorInfo);
 
-                        reader.Close();
+                        }
+                         
 
                         HttpWebResponse hwr = webEx.Response as HttpWebResponse;
                         throw new WorktileException(error.error_code, error.error_message, error.request,hwr.StatusCode);

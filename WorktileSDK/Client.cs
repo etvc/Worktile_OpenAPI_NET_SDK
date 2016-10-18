@@ -57,7 +57,7 @@ namespace WorktileSDK
             List<WorktileParameter> normal_params = new List<WorktileParameter>();
             foreach (var par in pars)
             {
-                if (command.Contains(par.Name))
+                if (command.Contains(":" + par.Name))
                 {
                     command = command.Replace(":" + par.Name, par.Value.ToString());
                 }

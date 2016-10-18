@@ -66,7 +66,37 @@ namespace WorktileSDK.API
                 new WorktileParameter("desc", desc));
              return JsonConvert.DeserializeObject<Result>(result).success;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pid"></param>
+        /// <param name="tid"></param>
+        /// <param name="post_id"></param>
+        /// <param name="event_id"></param>
+        /// <param name="file"></param>
+        /// <param name="type">上传文件关联的类型：project,task,post,event，默认值：project</param>
+        /// <param name="folder_id">文件夹id，如果type的值为project，需要传该属性，默认值为空</param>
+        /// <returns></returns>
+        public File AddFile(string pid, string tid, string post_id, string event_id, byte[] file, string type = "project", string folder_id = "")
+        {
+            string result = Client.HttpPostRequest("/file"
+                , new WorktileParameter("pid", pid)
+                , new WorktileParameter("type", type)
+                , new WorktileParameter("tid", tid)
+             , new WorktileParameter("post_id", post_id)
+             , new WorktileParameter("folder_id", folder_id),
+             new WorktileParameter("event_id", event_id),
+             new WorktileParameter("file", file));
+            return JsonConvert.DeserializeObject<File>(result);
+        }
+        public File AddFile(string pid, string tid, byte[] file)
+        {
+            return AddFile(pid, tid, "", "", file, "task", "");
+        }
+        public File AddFile(string pid, byte[] file)
+        {
+            return AddFile(pid, "", "", "", file, "project", "");
+        }
         /// <summary>
         /// 删除文件 
         /// </summary>
